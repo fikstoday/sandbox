@@ -17,6 +17,14 @@
   <div id="root"></div>
 
   <script src="scripts.js"></script>
+  <script>
+  if('serviceWorker' in navigator){
+  navigator.serviceWorker.register(./serviceWorker.js);
+    .then(function() {
+    console.log('service worker installed');
+    })
+  }
+  </script>
 </body>
 
 </html>

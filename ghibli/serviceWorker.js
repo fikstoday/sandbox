@@ -18,16 +18,16 @@ self.addEventListener('install', function(event) {
 });
 
 // activate event
-self.addEventListener('activate', evt => {
+self.addEventListener('activate', function(event) {
   //console.log('service worker activated');
 });
 
 // fetch event
-self.addEventListener('fetch', evt => {
-  //console.log('fetch event', evt);
-  evt.respondWith(
-    caches.match(evt.request).then(cacheRes => {
-      return cacheRes || fetch(evt.request);
+self.addEventListener('fetch', function(event) {
+  //console.log('fetch event', event);
+  event.respondWith(
+    caches.match(event.request).then(cacheResponse => {
+      return cacheResponse || fetch(event.request);
     })
   );
 });

@@ -3,14 +3,14 @@ const assetsToCache = [
 './',
 './styles.css',
 './index.html',
-  './logo.png'
+'./logo.png'
 ];
 
 // install event
 self.addEventListener('install', function(event) {
   //console.log('service worker installed');
   event.waitUntil(
-    caches.open(staticCacheName).then((cache) => {
+    caches.open(staticCacheName).then( function(cache) {
       console.log('caching shell assets');
       cache.addAll(assetsToCache);
     })
@@ -26,7 +26,7 @@ self.addEventListener('activate', function(event) {
 self.addEventListener('fetch', function(event) {
   //console.log('fetch event', event);
   event.respondWith(
-    caches.match(event.request).then(cacheResponse => {
+    caches.match(event.request).then( function(cacheResponse) {
       return cacheResponse || fetch(event.request);
     })
   );

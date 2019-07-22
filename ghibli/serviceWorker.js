@@ -1,4 +1,4 @@
-const cacheName = 'assets-v1';
+const staticCacheName = 'assets-v1';
 const assetsToCache = [
 './',
 './styles.css',
@@ -6,23 +6,28 @@ const assetsToCache = [
   './logo.png'
 ];
 
-self.addeventListener('install', event => {
+// install event
+self.addEventListener('install', function(event) {
+  //console.log('service worker installed');
   event.waitUntil(
-    console.log('[Sevice worker] install');
-caches.open(cacheName).then(cache =>{
-return cache.addAll(assetsToCache);
-});
-    );
+    caches.open(staticCacheName).then((cache) => {
+      console.log('caching shell assets');
+      cache.addAll(assetsToCache);
+    })
+  );
 });
 
-self.addEventListener('fetch', event=>{
-event.respondWith( caches.open(cacheName).then(cache => {
-  return cache.match(event.request)
-  .then(function(response){
-    if(response){
-    return response;
-    }
-    return fetch(event.request);
-  }
-        )})
-                  );
+// activate event
+self.addEventListener('activate', evt => {
+  //console.log('service worker activated');
+});
+
+// fetch event
+self.addEventListener('fetch', evt => {
+  //console.log('fetch event', evt);
+  evt.respondWith(
+    caches.match(evt.request).then(cacheRes => {
+      return cacheRes || fetch(evt.request);
+    })
+  );
+});
